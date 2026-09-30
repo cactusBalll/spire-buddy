@@ -99,6 +99,7 @@ internal static class CardChoiceChecks
 
     static async Task Execute(string api, string mode)
     {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var battle = new Battle(mode);
         string[] ids = mode switch
         {
@@ -137,7 +138,7 @@ internal static class CardChoiceChecks
         bool interrupted = mode is "new_draw" or "missing";
         Check(handler.Calls == (interrupted ? 2 : 1), "model calls " + api + mode);
         Check(status.Text("status") == (interrupted ? "error" : "idle"), "sequence status " + api + mode);
-        Console.WriteLine($"PASS {api} inline hand choices {mode}");
+        Console.WriteLine($"PASS {api} inline hand choices {mode} ({stopwatch.ElapsedMilliseconds}ms)");
     }
 
     sealed class Battle
